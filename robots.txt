@@ -1,0 +1,6 @@
+User-agent: *
+Allow: /
+Disallow: /leads.csv
+Sitemap: https://www.bitsyav.com/sitemap.xml
+Sitemap: https://www.bitsyav.com/post-sitemap.xml
+Sitemap: https://www.bitsyav.com/category-sitemap.xml

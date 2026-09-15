@@ -1,0 +1,38 @@
+Bitsy AV — deployment package
+==============================
+
+Contents
+--------
+bitsy/            All site + admin PHP code, assets, database migration scripts.
+bitsy_cms.sql     Full export (structure + data) of the local "bitsy_cms" MySQL
+                   database: pages, posts, categories, users, leads, snippets.
+
+What is NOT included (on purpose)
+----------------------------------
+- *.html files          Old WordPress-exported source pages, fully superseded by
+                          the matching *.php pages. Not needed in production.
+- .claude/              Local dev tooling only (dev router, launch config).
+- config/database.php   Contains local XAMPP dev credentials (root, no password).
+                          Never upload this file. Use config/database.example.php
+                          as a template instead.
+- data/admin.json       Legacy single-password auth file, no longer used —
+                          auth is now DB-backed (see admin/users.php).
+- data/login_attempts.json  Runtime login-throttle state; PHP recreates it
+                          automatically the first time it's needed.
+
+Server setup steps
+-------------------
+1. Upload the contents of bitsy/ to your web root.
+2. Create a MySQL database and user on the server, then import bitsy_cms.sql:
+     mysql -u <user> -p <database> < bitsy_cms.sql
+3. Copy config/database.example.php to config/database.php and fill in the
+   server's real DB host/name/user/password.
+4. Make sure data/ and its .htaccess exist and are writable by PHP (used for
+   the login-attempt lockout file).
+5. Confirm .htaccess (mod_rewrite) is allowed by your host — it powers the
+   pretty URLs for posts, categories, and both dynamic sitemaps.
+6. Visit /admin/ once logged out — since users now live in the DB (imported
+   with the dump), sign in with an existing admin account; no first-run setup
+   should be needed.
+7. Check robots.txt / sitemap.xml still point at the right domain if it
+   differs from bitsydisplays.com testing.
