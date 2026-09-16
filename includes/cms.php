@@ -34,6 +34,52 @@ function bitsy_cms_update_page_meta($slug, $title, $description) {
   return $query->execute(array(':slug' => $slug, ':title' => $title, ':description' => $description, ':og_title' => $title, ':og_description' => $description));
 }
 
+/** Updates only the status column of a registered page (published/draft/
+ *  private, matching the existing pages.status enum) -- never touches the
+ *  PHP template file. */
+function bitsy_cms_update_page_status($slug, $status) {
+  $db = bitsy_db();
+  if (!$db) { return false; }
+  $status = in_array($status, array('draft', 'published', 'private'), true) ? $status : 'draft';
+  $query = $db->prepare('UPDATE pages SET status = :status, updated_at = NOW() WHERE slug = :slug');
+  return $query->execute(array(':slug' => $slug, ':status' => $status));
+}
+
+/** Unregisters a page: deletes only its `pages` row. Never deletes or
+ *  touches the physical PHP file. */
+function bitsy_cms_delete_page($slug) {
+  $db = bitsy_db();
+  if (!$db) { return false; }
+  $query = $db->prepare('DELETE FROM pages WHERE slug = :slug');
+  return $query->execute(array(':slug' => $slug));
+}
+
+/** True if a `pages` row already uses this slug. Used by the Admin -> Pages
+ *  "Add Page" registration flow to reject duplicates before inserting. */
+function bitsy_cms_page_exists($slug) {
+  $db = bitsy_db();
+  if (!$db) { return false; }
+  $query = $db->prepare('SELECT id FROM pages WHERE slug = :slug LIMIT 1');
+  $query->execute(array(':slug' => $slug));
+  return (bool) $query->fetch();
+}
+
+/** Registers an existing, already-verified PHP file as a manageable page:
+ *  inserts one `pages` row (status published) with placeholder SEO/content
+ *  fields, so it immediately shows up in Admin -> Pages ready for editing.
+ *  Does not touch the PHP file itself. */
+function bitsy_cms_register_page($slug, $template) {
+  $db = bitsy_db();
+  if (!$db) { return false; }
+  $defaultTitle = ucwords(str_replace('-', ' ', $slug));
+  $query = $db->prepare('INSERT INTO pages (slug, template, status, title, meta_description, og_title, og_description, heading, intro, body) VALUES (:slug, :template, :status, :title, :meta_description, :og_title, :og_description, :heading, :intro, :body)');
+  return $query->execute(array(
+    ':slug' => $slug, ':template' => $template, ':status' => 'published',
+    ':title' => $defaultTitle, ':meta_description' => '', ':og_title' => $defaultTitle, ':og_description' => '',
+    ':heading' => $defaultTitle, ':intro' => '', ':body' => ''
+  ));
+}
+
 function bitsy_cms_insert_lead($data) {
   $db = bitsy_db();
   if (!$db) { return false; }

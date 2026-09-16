@@ -243,9 +243,20 @@ function bitsy_admin_pages() {
   $db = bitsy_db();
   if ($db) {
     try {
-      $rows = $db->query('SELECT slug, template AS file, title, meta_description AS description, heading, intro FROM pages ORDER BY slug')->fetchAll();
+      $rows = $db->query('SELECT slug, template AS file, status, title, meta_description AS description, heading, intro FROM pages ORDER BY slug')->fetchAll();
       if ($rows) {
-        foreach ($rows as &$row) { $row['file'] = BITSY_ROOT . '/' . $row['file']; }
+        foreach ($rows as &$row) {
+          $absoluteFile = BITSY_ROOT . '/' . $row['file'];
+          $row['file_exists'] = is_file($absoluteFile);
+          // A registered page whose template file has been deleted can no
+          // longer render on the frontend, so it is auto-demoted to draft.
+          // A page already left as draft/private stays exactly as it is.
+          if (!$row['file_exists'] && $row['status'] === 'published') {
+            bitsy_cms_update_page_status($row['slug'], 'draft');
+            $row['status'] = 'draft';
+          }
+          $row['file'] = $absoluteFile;
+        }
         return $rows;
       }
     } catch (Exception $exception) { /* Use the file fallback until the schema is migrated. */ }
@@ -257,7 +268,7 @@ function bitsy_admin_pages() {
     $html = file_get_contents($file);
     preg_match('/<title>(.*?)<\/title>/is', $html, $title);
     preg_match('/<meta\s+name=["\']description["\']\s+content=["\'](.*?)["\']/is', $html, $description);
-    $pages[] = array('slug' => $slug, 'file' => $file,
+    $pages[] = array('slug' => $slug, 'file' => $file, 'status' => 'published', 'file_exists' => true,
       'title' => isset($title[1]) ? trim(html_entity_decode($title[1], ENT_QUOTES, 'UTF-8')) : '',
       'description' => isset($description[1]) ? trim(html_entity_decode($description[1], ENT_QUOTES, 'UTF-8')) : '');
   }
@@ -272,6 +283,7 @@ function bitsy_admin_find_page($slug) {
 }
 
 function bitsy_admin_page_content($file) {
+  if (!is_file($file)) { return array('heading' => '', 'intro' => ''); }
   $html = file_get_contents($file);
   preg_match('/<h1\b[^>]*>(.*?)<\/h1>/is', $html, $heading);
   preg_match('/<p\b[^>]*class=["\'][^"\']*\blede\b[^"\']*["\'][^>]*>(.*?)<\/p>/is', $html, $intro);
