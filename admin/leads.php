@@ -4,4 +4,88 @@ bitsy_admin_require_login();
 bitsy_admin_mark_seen('leads');
 $navCounts = bitsy_admin_new_counts();
 $leads = bitsy_admin_leads();
-?><!doctype html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1"><title>Enquiries | Bitsy Admin</title><link rel="stylesheet" href="assets/admin.css"></head><body><div class="admin-shell"><aside class="sidebar"><a class="brand" href="index.php"><img class="brand-mark" src="../assets/img/bitsy-favicon.png" alt="Bitsy AV"><span>Bitsy <small>Admin</small></span></a><p class="nav-label">Workspace</p><nav class="side-nav"><a href="index.php"><span></span>Dashboard</a><a href="pages.php"><span></span>Pages<?php if ($navCounts['pages'] > 0): ?> <b><?php echo $navCounts['pages']; ?></b><?php endif; ?></a><a href="posts.php"><span></span>Posts<?php if ($navCounts['posts'] > 0): ?> <b><?php echo $navCounts['posts']; ?></b><?php endif; ?></a><a href="categories.php"><span></span>Categories<?php if ($navCounts['categories'] > 0): ?> <b><?php echo $navCounts['categories']; ?></b><?php endif; ?></a><a href="media.php"><span></span>Media</a><a class="active" href="leads.php"><span></span>Enquiries</a></nav><p class="nav-label">System</p><nav class="side-nav"><a href="../" target="_blank"><span></span>View website</a><?php if (bitsy_admin_is_admin()): ?><a href="snippets.php"><span></span>Code Snippets</a><a href="users.php"><span></span>Users</a><?php endif; ?><a href="logout.php"><span></span>Sign out</a></nav></aside><div class="admin-content"><header class="topbar"><div><p class="eyebrow">INBOX / ENQUIRIES</p><h1>Enquiries</h1></div><a class="avatar" href="logout.php">A</a></header><main class="admin-main"><div class="page-toolbar"><p class="muted">Form submissions captured by the website.</p><span class="inbox-count"><?php echo count($leads); ?> total</span></div><section class="panel page-table"><div class="table-wrap"><table><thead><tr><th>Received</th><th>Contact</th><th>Solution</th><th>Company</th><th>Page</th><th>Message</th></tr></thead><tbody><?php if (!$leads): ?><tr><td colspan="6" class="muted">No enquiries recorded yet.</td></tr><?php else: foreach ($leads as $lead): ?><tr><td><?php echo bitsy_admin_escape(isset($lead['Received']) ? $lead['Received'] : ''); ?></td><td><strong><?php echo bitsy_admin_escape(isset($lead['Name']) ? $lead['Name'] : ''); ?></strong><small><?php echo bitsy_admin_escape(isset($lead['Email']) ? $lead['Email'] : ''); ?><br><?php echo bitsy_admin_escape(isset($lead['Mobile']) ? $lead['Mobile'] : ''); ?></small></td><td><?php echo bitsy_admin_escape(isset($lead['Solution']) ? $lead['Solution'] : ''); ?></td><td><?php echo bitsy_admin_escape(isset($lead['Company']) ? $lead['Company'] : ''); ?></td><td><?php echo bitsy_admin_escape(isset($lead['Page']) ? $lead['Page'] : ''); ?></td><td><?php echo nl2br(bitsy_admin_escape(isset($lead['Message']) ? $lead['Message'] : '')); ?></td></tr><?php endforeach; endif; ?></tbody></table></div></section></main></div></div></body></html>
+?><!doctype html>
+<html lang="en">
+
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="icon" type="image/png" href="../assets/img/favicon.png">
+    <title>Enquiries | Bitsy Admin</title>
+    <link rel="stylesheet" href="assets/admin.css">
+</head>
+
+<body>
+    <div class="admin-shell">
+        <aside class="sidebar"><a class="brand" href="index.php"><img class="brand-mark"
+                    src="../assets/img/bitsy-favicon.png" alt="Bitsy AV"><span>Bitsy <small>Admin</small></span></a>
+            <p class="nav-label">Workspace</p>
+            <nav class="side-nav"><a href="index.php"><span></span>Dashboard</a><a
+                    href="pages.php"><span></span>Pages<?php if ($navCounts['pages'] > 0): ?>
+                        <b><?php echo $navCounts['pages']; ?></b><?php endif; ?></a><a
+                    href="posts.php"><span></span>Posts<?php if ($navCounts['posts'] > 0): ?>
+                        <b><?php echo $navCounts['posts']; ?></b><?php endif; ?></a><a
+                    href="categories.php"><span></span>Categories<?php if ($navCounts['categories'] > 0): ?>
+                        <b><?php echo $navCounts['categories']; ?></b><?php endif; ?></a><a
+                    href="media.php"><span></span>Media</a><a class="active" href="leads.php"><span></span>Enquiries</a>
+            </nav>
+            <p class="nav-label">System</p>
+            <nav class="side-nav"><a href="../" target="_blank"><span></span>View
+                    website</a><?php if (bitsy_admin_is_admin()): ?><a href="snippets.php"><span></span>Code
+                        Snippets</a><a href="users.php"><span></span>Users</a><?php endif; ?><a
+                    href="logout.php"><span></span>Sign out</a></nav>
+        </aside>
+        <div class="admin-content">
+            <header class="topbar">
+                <div>
+                    <p class="eyebrow">INBOX / ENQUIRIES</p>
+                    <h1>Enquiries</h1>
+                </div><a class="avatar" href="logout.php">A</a>
+            </header>
+            <main class="admin-main">
+                <div class="page-toolbar">
+                    <p class="muted">Form submissions captured by the website.</p><span
+                        class="inbox-count"><?php echo count($leads); ?> total</span>
+                </div>
+                <section class="panel page-table">
+                    <div class="table-wrap">
+                        <table>
+                            <thead>
+                                <tr>
+                                    <th>Received</th>
+                                    <th>Contact</th>
+                                    <th>Solution</th>
+                                    <th>Company</th>
+                                    <th>Page</th>
+                                    <th>Message</th>
+                                </tr>
+                            </thead>
+                            <tbody><?php if (!$leads): ?>
+                                    <tr>
+                                        <td colspan="6" class="muted">No enquiries recorded yet.</td>
+                                    </tr><?php else:
+                                foreach ($leads as $lead): ?>
+                                        <tr>
+                                            <td><?php echo bitsy_admin_escape(isset($lead['Received']) ? $lead['Received'] : ''); ?>
+                                            </td>
+                                            <td><strong><?php echo bitsy_admin_escape(isset($lead['Name']) ? $lead['Name'] : ''); ?></strong><small><?php echo bitsy_admin_escape(isset($lead['Email']) ? $lead['Email'] : ''); ?><br><?php echo bitsy_admin_escape(isset($lead['Mobile']) ? $lead['Mobile'] : ''); ?></small>
+                                            </td>
+                                            <td><?php echo bitsy_admin_escape(isset($lead['Solution']) ? $lead['Solution'] : ''); ?>
+                                            </td>
+                                            <td><?php echo bitsy_admin_escape(isset($lead['Company']) ? $lead['Company'] : ''); ?>
+                                            </td>
+                                            <td><?php echo bitsy_admin_escape(isset($lead['Page']) ? $lead['Page'] : ''); ?>
+                                            </td>
+                                            <td><?php echo nl2br(bitsy_admin_escape(isset($lead['Message']) ? $lead['Message'] : '')); ?>
+                                            </td>
+                                        </tr><?php endforeach; endif; ?>
+                            </tbody>
+                        </table>
+                    </div>
+                </section>
+            </main>
+        </div>
+    </div>
+</body>
+
+</html>

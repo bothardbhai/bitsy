@@ -5,5 +5,128 @@ $navCounts = bitsy_admin_new_counts();
 $pages = bitsy_admin_pages();
 $leads = bitsy_admin_leads();
 ?><!doctype html>
-<html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1"><title>Dashboard | Bitsy Admin</title><link rel="stylesheet" href="assets/admin.css"></head>
-<body><div class="admin-shell"><aside class="sidebar"><a class="brand" href="index.php"><img class="brand-mark" src="../assets/img/bitsy-favicon.png" alt="Bitsy AV"><span>Bitsy <small>Admin</small></span></a><p class="nav-label">Workspace</p><nav class="side-nav"><a class="active" href="index.php"><span></span>Dashboard</a><a href="pages.php"><span></span>Pages<?php if ($navCounts['pages'] > 0): ?> <b><?php echo $navCounts['pages']; ?></b><?php endif; ?></a><a href="posts.php"><span></span>Posts<?php if ($navCounts['posts'] > 0): ?> <b><?php echo $navCounts['posts']; ?></b><?php endif; ?></a><a href="categories.php"><span></span>Categories<?php if ($navCounts['categories'] > 0): ?> <b><?php echo $navCounts['categories']; ?></b><?php endif; ?></a><a href="media.php"><span></span>Media</a><a href="leads.php"><span></span>Enquiries<?php if ($navCounts['leads'] > 0): ?> <b><?php echo $navCounts['leads']; ?></b><?php endif; ?></a></nav><p class="nav-label">System</p><nav class="side-nav"><a href="../" target="_blank"><span></span>View website</a><?php if (bitsy_admin_is_admin()): ?><a href="snippets.php"><span></span>Code Snippets</a><a href="users.php"><span></span>Users</a><?php endif; ?><a href="logout.php"><span></span>Sign out</a></nav><div class="sidebar-foot"><strong>Bitsy AV</strong><span>Content workspace</span></div></aside><div class="admin-content"><header class="topbar"><div><p class="eyebrow">OVERVIEW</p><h1>Good morning</h1></div><div class="top-actions"><a class="site-link" href="../" target="_blank">View site -&gt;</a><a class="avatar" href="logout.php" title="Sign out">A</a></div></header><main class="admin-main"><section class="welcome"><div><p class="eyebrow">CONTENT WORKSPACE</p><h2>Keep the site current.</h2><p>Manage your live pages, search previews and incoming enquiries from one place.</p></div><a class="button primary" href="pages.php">Manage pages <span>-&gt;</span></a></section><section class="stats"><div class="stat-card"><span class="stat-icon orange">-&gt;</span><div><strong><?php echo count($pages); ?></strong><span>Published pages</span></div><a href="pages.php">View all -&gt;</a></div><div class="stat-card"><span class="stat-icon green">-&gt;</span><div><strong><?php echo count($leads); ?></strong><span>Total enquiries</span></div><a href="leads.php">Open inbox -&gt;</a></div><div class="stat-card"><span class="stat-icon blue">-&gt;</span><div><strong><?php echo count(array_filter($pages, function ($page) { return $page['title'] !== '' && $page['description'] !== ''; })); ?></strong><span>Pages with SEO</span></div><a href="pages.php">Review SEO -&gt;</a></div></section><div class="dashboard-grid"><section class="panel"><div class="panel-heading"><div><p class="eyebrow">PUBLISHED CONTENT</p><h2>Pages</h2></div><a class="text-link" href="pages.php">Manage all -&gt;</a></div><div class="content-list"><?php foreach (array_slice($pages, 0, 7) as $page): ?><div class="content-row"><span class="file-icon">P</span><div class="content-title"><strong><?php echo bitsy_admin_escape(ucwords(str_replace('-', ' ', $page['slug']))); ?></strong><span>/<?php echo bitsy_admin_escape($page['slug']); ?>.php</span></div><span class="status published">Published</span><a class="row-action" href="pages.php#<?php echo bitsy_admin_escape($page['slug']); ?>">Edit</a></div><?php endforeach; ?></div><a class="list-footer" href="pages.php">See all <?php echo count($pages); ?> pages <span>-&gt;</span></a></section><section class="panel"><div class="panel-heading"><div><p class="eyebrow">INBOX</p><h2>Latest enquiries</h2></div><a class="text-link" href="leads.php">View all -&gt;</a></div><?php if (!$leads): ?><div class="empty-state"><span>-&gt;</span><p>No enquiries yet.</p></div><?php else: ?><div class="content-list"><?php foreach (array_slice($leads, 0, 5) as $lead): ?><div class="lead-row"><span class="lead-avatar"><?php echo bitsy_admin_escape(strtoupper(substr(isset($lead['Name']) ? $lead['Name'] : '?', 0, 1))); ?></span><div class="content-title"><strong><?php echo bitsy_admin_escape(isset($lead['Name']) ? $lead['Name'] : 'Unknown'); ?></strong><span><?php echo bitsy_admin_escape(isset($lead['Solution']) ? $lead['Solution'] : 'General enquiry'); ?></span></div><span class="lead-date"><?php echo bitsy_admin_escape(isset($lead['Received']) ? $lead['Received'] : ''); ?></span></div><?php endforeach; ?></div><a class="list-footer" href="leads.php">Open enquiries <span>-&gt;</span></a><?php endif; ?></section></div><section class="panel quick-panel"><div><p class="eyebrow">QUICK ACTIONS</p><h2>What would you like to do?</h2></div><div class="quick-actions"><a href="pages.php"><span>P</span><strong>Edit page SEO</strong><small>Titles, descriptions and previews</small></a><a href="posts.php"><span>O</span><strong>Manage posts</strong><small>Blog content and publishing</small></a><a href="media.php"><span></span>Media</a><a href="leads.php"><span>E</span><strong>Review enquiries</strong><small>Read your latest form submissions</small></a></div></section></main></div></div></body></html>
+<html lang="en">
+
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="icon" type="image/png" href="../assets/img/favicon.png">
+    <title>Dashboard | Bitsy Admin</title>
+    <link rel="stylesheet" href="assets/admin.css">
+</head>
+
+<body>
+    <div class="admin-shell">
+        <aside class="sidebar"><a class="brand" href="index.php"><img class="brand-mark"
+                    src="../assets/img/bitsy-favicon.png" alt="Bitsy AV"><span>Bitsy <small>Admin</small></span></a>
+            <p class="nav-label">Workspace</p>
+            <nav class="side-nav"><a class="active" href="index.php"><span></span>Dashboard</a><a
+                    href="pages.php"><span></span>Pages<?php if ($navCounts['pages'] > 0): ?>
+                        <b><?php echo $navCounts['pages']; ?></b><?php endif; ?></a><a
+                    href="posts.php"><span></span>Posts<?php if ($navCounts['posts'] > 0): ?>
+                        <b><?php echo $navCounts['posts']; ?></b><?php endif; ?></a><a
+                    href="categories.php"><span></span>Categories<?php if ($navCounts['categories'] > 0): ?>
+                        <b><?php echo $navCounts['categories']; ?></b><?php endif; ?></a><a
+                    href="media.php"><span></span>Media</a><a
+                    href="leads.php"><span></span>Enquiries<?php if ($navCounts['leads'] > 0): ?>
+                        <b><?php echo $navCounts['leads']; ?></b><?php endif; ?></a></nav>
+            <p class="nav-label">System</p>
+            <nav class="side-nav"><a href="../" target="_blank"><span></span>View
+                    website</a><?php if (bitsy_admin_is_admin()): ?><a href="snippets.php"><span></span>Code
+                        Snippets</a><a href="users.php"><span></span>Users</a><?php endif; ?><a
+                    href="logout.php"><span></span>Sign out</a></nav>
+            <div class="sidebar-foot"><strong>Bitsy AV</strong><span>Content workspace</span></div>
+        </aside>
+        <div class="admin-content">
+            <header class="topbar">
+                <div>
+                    <p class="eyebrow">OVERVIEW</p>
+                    <h1>Good morning</h1>
+                </div>
+                <div class="top-actions"><a class="site-link" href="../" target="_blank">View site -&gt;</a><a
+                        class="avatar" href="logout.php" title="Sign out">A</a></div>
+            </header>
+            <main class="admin-main">
+                <section class="welcome">
+                    <div>
+                        <p class="eyebrow">CONTENT WORKSPACE</p>
+                        <h2>Keep the site current.</h2>
+                        <p>Manage your live pages, search previews and incoming enquiries from one place.</p>
+                    </div><a class="button primary" href="pages.php">Manage pages <span>-&gt;</span></a>
+                </section>
+                <section class="stats">
+                    <div class="stat-card"><span class="stat-icon orange">-&gt;</span>
+                        <div><strong><?php echo count($pages); ?></strong><span>Published pages</span></div><a
+                            href="pages.php">View all -&gt;</a>
+                    </div>
+                    <div class="stat-card"><span class="stat-icon green">-&gt;</span>
+                        <div><strong><?php echo count($leads); ?></strong><span>Total enquiries</span></div><a
+                            href="leads.php">Open inbox -&gt;</a>
+                    </div>
+                    <div class="stat-card"><span class="stat-icon blue">-&gt;</span>
+                        <div>
+                            <strong><?php echo count(array_filter($pages, function ($page) {
+                                return $page['title'] !== '' && $page['description'] !== '';
+                            })); ?></strong><span>Pages
+                                with SEO</span>
+                        </div><a href="pages.php">Review SEO -&gt;</a>
+                    </div>
+                </section>
+                <div class="dashboard-grid">
+                    <section class="panel">
+                        <div class="panel-heading">
+                            <div>
+                                <p class="eyebrow">PUBLISHED CONTENT</p>
+                                <h2>Pages</h2>
+                            </div><a class="text-link" href="pages.php">Manage all -&gt;</a>
+                        </div>
+                        <div class="content-list"><?php foreach (array_slice($pages, 0, 7) as $page): ?>
+                                <div class="content-row"><span class="file-icon">P</span>
+                                    <div class="content-title">
+                                        <strong><?php echo bitsy_admin_escape(ucwords(str_replace('-', ' ', $page['slug']))); ?></strong><span>/<?php echo bitsy_admin_escape($page['slug']); ?>.php</span>
+                                    </div><span class="status published">Published</span><a class="row-action"
+                                        href="pages.php#<?php echo bitsy_admin_escape($page['slug']); ?>">Edit</a>
+                                </div><?php endforeach; ?>
+                        </div><a class="list-footer" href="pages.php">See all <?php echo count($pages); ?> pages
+                            <span>-&gt;</span></a>
+                    </section>
+                    <section class="panel">
+                        <div class="panel-heading">
+                            <div>
+                                <p class="eyebrow">INBOX</p>
+                                <h2>Latest enquiries</h2>
+                            </div><a class="text-link" href="leads.php">View all -&gt;</a>
+                        </div><?php if (!$leads): ?>
+                            <div class="empty-state"><span>-&gt;</span>
+                                <p>No enquiries yet.</p>
+                            </div><?php else: ?>
+                            <div class="content-list"><?php foreach (array_slice($leads, 0, 5) as $lead): ?>
+                                    <div class="lead-row"><span
+                                            class="lead-avatar"><?php echo bitsy_admin_escape(strtoupper(substr(isset($lead['Name']) ? $lead['Name'] : '?', 0, 1))); ?></span>
+                                        <div class="content-title">
+                                            <strong><?php echo bitsy_admin_escape(isset($lead['Name']) ? $lead['Name'] : 'Unknown'); ?></strong><span><?php echo bitsy_admin_escape(isset($lead['Solution']) ? $lead['Solution'] : 'General enquiry'); ?></span>
+                                        </div><span
+                                            class="lead-date"><?php echo bitsy_admin_escape(isset($lead['Received']) ? $lead['Received'] : ''); ?></span>
+                                    </div><?php endforeach; ?>
+                            </div><a class="list-footer" href="leads.php">Open enquiries
+                                <span>-&gt;</span></a><?php endif; ?>
+                    </section>
+                </div>
+                <section class="panel quick-panel">
+                    <div>
+                        <p class="eyebrow">QUICK ACTIONS</p>
+                        <h2>What would you like to do?</h2>
+                    </div>
+                    <div class="quick-actions"><a href="pages.php"><span>P</span><strong>Edit page
+                                SEO</strong><small>Titles, descriptions and previews</small></a><a
+                            href="posts.php"><span>O</span><strong>Manage posts</strong><small>Blog content and
+                                publishing</small></a><a href="media.php"><span></span>Media</a><a
+                            href="leads.php"><span>E</span><strong>Review enquiries</strong><small>Read your latest form
+                                submissions</small></a></div>
+                </section>
+            </main>
+        </div>
+    </div>
+</body>
+
+</html>

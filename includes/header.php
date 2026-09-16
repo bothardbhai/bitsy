@@ -16,7 +16,8 @@ $pageExtraHead = isset($pageExtraHead) ? $pageExtraHead : '';
 $activeNav = isset($activeNav) ? $activeNav : '';
 $quoteHref = isset($quoteHref) ? $quoteHref : '#quote';
 
-function bitsy_nav_current($nav, $activeNav) {
+function bitsy_nav_current($nav, $activeNav)
+{
   return $nav === $activeNav ? ' aria-current="page"' : '';
 }
 ?><!DOCTYPE html>
@@ -24,9 +25,11 @@ function bitsy_nav_current($nav, $activeNav) {
 
 <head>
   <meta charset="utf-8">
-  <?php if ($baseHref !== ''): ?><base href="<?php echo htmlspecialchars($baseHref, ENT_QUOTES, 'UTF-8'); ?>">
+  <?php if ($baseHref !== ''): ?>
+    <base href="<?php echo htmlspecialchars($baseHref, ENT_QUOTES, 'UTF-8'); ?>">
   <?php endif; ?>
   <meta name="viewport" content="width=device-width, initial-scale=1">
+  <link rel="icon" type="image/png" href="assets/img/favicon.png">
   <title><?php echo htmlspecialchars($pageTitle, ENT_QUOTES, 'UTF-8'); ?></title>
   <meta name="description" content="<?php echo htmlspecialchars($pageDescription, ENT_QUOTES, 'UTF-8'); ?>">
   <meta property="og:title" content="<?php echo htmlspecialchars($pageOgTitle, ENT_QUOTES, 'UTF-8'); ?>">
@@ -52,10 +55,11 @@ function bitsy_nav_current($nav, $activeNav) {
     <div class="hdr-in">
       <a class="hdr-logo" href="index.php"><img src="assets/img/bitsy-logo.png" alt="Bitsy AV"></a>
       <nav class="mainnav" id="mainnav">
-        <a href="index.php"<?php echo bitsy_nav_current('home', $activeNav); ?>>Home</a>
+        <a href="index.php" <?php echo bitsy_nav_current('home', $activeNav); ?>>Home</a>
         <span class="hasmega">
-          <a href="our-services.php"<?php echo bitsy_nav_current('solutions', $activeNav); ?>>Solutions <svg width="14" height="14" viewBox="0 0 24 24"
-              fill="none" stroke="currentColor" stroke-width="2.75" stroke-linecap="round">
+          <a href="our-services.php" <?php echo bitsy_nav_current('solutions', $activeNav); ?>>Solutions <svg width="14"
+              height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.75"
+              stroke-linecap="round">
               <polyline points="6 9 12 15 18 9" />
             </svg></a>
           <div class="mega">
@@ -123,11 +127,11 @@ function bitsy_nav_current($nav, $activeNav) {
             </div>
           </div>
         </span>
-        <a href="about-us.php"<?php echo bitsy_nav_current('about', $activeNav); ?>>About Us</a>
-        <a href="clients.php"<?php echo bitsy_nav_current('clients', $activeNav); ?>>Clients</a>
-        <a href="gallery.php"<?php echo bitsy_nav_current('gallery', $activeNav); ?>>Gallery</a>
-        <a href="blog.php"<?php echo bitsy_nav_current('blog', $activeNav); ?>>Blogs</a>
-        <a href="contact-us.php"<?php echo bitsy_nav_current('contact', $activeNav); ?>>Contact Us</a>
+        <a href="about-us.php" <?php echo bitsy_nav_current('about', $activeNav); ?>>About Us</a>
+        <a href="clients.php" <?php echo bitsy_nav_current('clients', $activeNav); ?>>Clients</a>
+        <a href="gallery.php" <?php echo bitsy_nav_current('gallery', $activeNav); ?>>Gallery</a>
+        <a href="blog.php" <?php echo bitsy_nav_current('blog', $activeNav); ?>>Blogs</a>
+        <a href="contact-us.php" <?php echo bitsy_nav_current('contact', $activeNav); ?>>Contact Us</a>
       </nav>
       <div class="hdr-act">
         <a class="tel" href="tel:+919930373731">
@@ -138,7 +142,8 @@ function bitsy_nav_current($nav, $activeNav) {
             </svg></i>
           +91 99303 73731
         </a>
-        <a class="btn btn-primary" href="<?php echo htmlspecialchars($quoteHref, ENT_QUOTES, 'UTF-8'); ?>" style="font-weight:800">Get Free AV Design</a>
+        <a class="btn btn-primary" href="<?php echo htmlspecialchars($quoteHref, ENT_QUOTES, 'UTF-8'); ?>"
+          style="font-weight:800">Get Free AV Design</a>
         <button class="navtoggle" type="button" aria-label="Menu" aria-expanded="false"
           onclick="var n=document.getElementById('mainnav');var o=n.classList.toggle('open');this.setAttribute('aria-expanded',o)">
           <svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"

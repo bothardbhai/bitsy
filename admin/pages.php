@@ -113,6 +113,7 @@ unset($page);
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
+  <link rel="icon" type="image/png" href="../assets/img/favicon.png">
   <title>Pages | Bitsy Admin</title>
   <link rel="stylesheet" href="assets/admin.css">
   <style>
