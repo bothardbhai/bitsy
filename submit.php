@@ -9,6 +9,7 @@ define('BITSY_MAIL_CC', '');
 define('BITSY_PHONE', '+91 99303 73731');
 define('BITSY_WHATSAPP', 'https://wa.me/919821157155');
 require_once __DIR__ . '/includes/cms.php';
+require_once __DIR__ . '/includes/mailer.php';
 
 if ($_SERVER['REQUEST_METHOD'] !== 'POST') { header('Location: index.php'); exit; }
 
@@ -88,19 +89,14 @@ $lines[] = 'Reply within 24 working hours with layout, spec and indicative budge
 $body = implode("\n", $lines);
 
 $host = isset($_SERVER['HTTP_HOST']) ? preg_replace('/^www\./', '', $_SERVER['HTTP_HOST']) : 'bitsyav.com';
-$headers  = 'From: Bitsy AV Website <no-reply@' . $host . ">\r\n";
-$headers .= 'Reply-To: ' . $data['Name'] . ' <' . $data['Email'] . ">\r\n";
-if (BITSY_MAIL_CC !== '') { $headers .= 'Cc: ' . BITSY_MAIL_CC . "\r\n"; }
-$headers .= "Content-Type: text/plain; charset=UTF-8\r\n";
-$headers .= 'X-Mailer: PHP/' . phpversion();
-@mail(BITSY_MAIL_TO, $subject, $body, $headers);
+bitsy_send_mail(BITSY_MAIL_TO, $subject, $body, 'no-reply@' . $host, 'Bitsy AV Website', $data['Email'], $data['Name'], BITSY_MAIL_CC !== '' ? BITSY_MAIL_CC : null);
 
 $ack  = 'Hi ' . $data['Name'] . ",\n\n";
 $ack .= 'Thanks for your enquiry about ' . $data['Solution'] . ".\n";
 $ack .= "A Certified Technology Specialist will get back to you within 24 working hours with a layout, a spec sheet and an honest indicative budget.\n\n";
 $ack .= 'Need it sooner? Call ' . BITSY_PHONE . ' or WhatsApp us: ' . BITSY_WHATSAPP . "\n\n";
 $ack .= "Team Bitsy AV\nBitsy Infotech Pvt Ltd";
-@mail($data['Email'], 'We have your request, Bitsy AV', $ack, 'From: Bitsy AV <' . BITSY_MAIL_TO . ">\r\nContent-Type: text/plain; charset=UTF-8");
+bitsy_send_mail($data['Email'], 'We have your request, Bitsy AV', $ack, BITSY_MAIL_TO, 'Bitsy AV');
 
 // leads.csv is a fallback for when the database is unreachable, not a permanent duplicate store.
 if (!$savedToDb) {

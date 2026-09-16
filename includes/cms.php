@@ -37,8 +37,8 @@ function bitsy_cms_update_page_meta($slug, $title, $description) {
 function bitsy_cms_insert_lead($data) {
   $db = bitsy_db();
   if (!$db) { return false; }
-  $query = $db->prepare('INSERT INTO leads (name, mobile, email, solution, company, role, city, industry, rooms, timeline, budget, message, form_source, page_slug, ip_address, created_at) VALUES (:name, :mobile, :email, :solution, :company, :role, :city, :industry, :rooms, :timeline, :budget, :message, :form_source, :page_slug, :ip_address, NOW())');
-  return $query->execute(array(':name' => $data['Name'], ':mobile' => $data['Mobile'], ':email' => $data['Email'], ':solution' => $data['Solution'], ':company' => $data['Company'], ':role' => $data['Role'], ':city' => $data['City'], ':industry' => $data['Industry'], ':rooms' => $data['Rooms'], ':timeline' => $data['Timeline'], ':budget' => $data['Budget'], ':message' => $data['Message'], ':form_source' => $data['Form'], ':page_slug' => $data['Page'], ':ip_address' => $data['IP']));
+  $query = $db->prepare('INSERT INTO leads (name, mobile, email, solution, company, role, city, industry, rooms, timeline, budget, message, form_source, page_slug, ip_address, notes, created_at) VALUES (:name, :mobile, :email, :solution, :company, :role, :city, :industry, :rooms, :timeline, :budget, :message, :form_source, :page_slug, :ip_address, :notes, NOW())');
+  return $query->execute(array(':name' => $data['Name'], ':mobile' => $data['Mobile'], ':email' => $data['Email'], ':solution' => $data['Solution'], ':company' => $data['Company'], ':role' => $data['Role'], ':city' => $data['City'], ':industry' => $data['Industry'], ':rooms' => $data['Rooms'], ':timeline' => $data['Timeline'], ':budget' => $data['Budget'], ':message' => $data['Message'], ':form_source' => $data['Form'], ':page_slug' => $data['Page'], ':ip_address' => $data['IP'], ':notes' => ''));
 }
 
 function bitsy_cms_apply_page($html, $slug) {
