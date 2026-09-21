@@ -32,6 +32,13 @@ function bitsy_nav_current($nav, $activeNav)
   <link rel="icon" type="image/png" href="assets/img/favicon.png">
   <title><?php echo htmlspecialchars($pageTitle, ENT_QUOTES, 'UTF-8'); ?></title>
   <meta name="description" content="<?php echo htmlspecialchars($pageDescription, ENT_QUOTES, 'UTF-8'); ?>">
+  <?php
+  $canonicalPath = parse_url($_SERVER['REQUEST_URI'], PHP_URL_PATH);
+  $canonicalPath = preg_replace('/\.php$/i', '', $canonicalPath);
+
+  $canonicalUrl = 'https://' . $_SERVER['HTTP_HOST'] . $canonicalPath;
+  ?>
+  <link rel="canonical" href="<?php echo htmlspecialchars($canonicalUrl, ENT_QUOTES, 'UTF-8'); ?>">
   <meta property="og:title" content="<?php echo htmlspecialchars($pageOgTitle, ENT_QUOTES, 'UTF-8'); ?>">
   <meta property="og:description" content="<?php echo htmlspecialchars($pageOgDescription, ENT_QUOTES, 'UTF-8'); ?>">
   <meta property="og:type" content="<?php echo htmlspecialchars($pageOgType, ENT_QUOTES, 'UTF-8'); ?>">
