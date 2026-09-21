@@ -274,7 +274,7 @@ $isCreating = isset($_GET['new']) || $isEditing || $error !== '' && $_SERVER['RE
                     placeholder="how-to-size-video-wall (auto-generated from title)">
                 </div>
               </div>
-              <p class="muted" style="margin:4px 0 0;font-size:12px">URL will be <code>post.php?slug=your-slug</code>.
+              <p class="muted" style="margin:4px 0 0;font-size:12px">URL will be <code>blog/your-slug/</code>.
                 Leave blank to auto-generate.</p>
               <div class="row">
                 <div><label for="p-status">Status</label><select id="p-status" name="status">

@@ -16,7 +16,7 @@ echo '<?xml version="1.0" encoding="UTF-8"?>' . "\n";
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
 <?php foreach ($posts as $post): ?>
   <url>
-    <loc><?php echo htmlspecialchars($baseUrl . '/post.php?slug=' . $post['slug'], ENT_QUOTES, 'UTF-8'); ?></loc>
+    <loc><?php echo htmlspecialchars($baseUrl . '/blog/' . $post['slug'] . '/', ENT_QUOTES, 'UTF-8'); ?></loc>
     <lastmod><?php echo date('c', strtotime($post['updated_at'] ?: $post['created_at'])); ?></lastmod>
   </url>
 <?php endforeach; ?>

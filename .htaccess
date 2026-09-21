@@ -5,12 +5,19 @@
 <IfModule mod_rewrite.c>
   RewriteEngine On
 
+  # Redirect old post.php?slug=xxx / post?slug=xxx links to /blog/xxx/
+  RewriteCond %{THE_REQUEST} \s(/(?:[^\s?]*/)?)(?:post\.php|post)\?slug=([a-z0-9-]+)[\s&] [NC]
+  RewriteRule ^ %1blog/%2/? [R=301,L]
+
   # Redirect .php URLs to clean URLs
   RewriteCond %{THE_REQUEST} \s/+(.+?)\.php[\s?] [NC]
   RewriteRule ^(.+)\.php$ $1 [R=301,L,NE]
 
   # Category URL
   RewriteRule ^category/([a-z0-9-]+)/?$ category.php?slug=$1 [L,QSA]
+
+  # Blog post URL
+  RewriteRule ^blog/([a-z0-9-]+)/?$ post.php?slug=$1 [L,QSA]
 
   # Sitemap URLs
   RewriteRule ^category-sitemap\.xml$ category-sitemap.php [L]

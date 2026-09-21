@@ -65,7 +65,7 @@ $blogPosts = bitsy_cms_posts_page($blogUsesFallback ? null : 'published', $blogP
     <?php if (!empty($blogPost['category'])): ?><p class="mini" style="margin:0"><a href="category/<?php echo htmlspecialchars($blogPost['category_slug'], ENT_QUOTES, 'UTF-8'); ?>/" style="color:inherit"><?php echo htmlspecialchars($blogPost['category'], ENT_QUOTES, 'UTF-8'); ?></a></p><?php endif; ?>
     <h3 class="h3" style="line-height:1.2"><?php echo htmlspecialchars($blogPost['title'], ENT_QUOTES, 'UTF-8'); ?></h3>
     <p class="apps" style="margin:0"><?php echo htmlspecialchars($blogPost['excerpt'], ENT_QUOTES, 'UTF-8'); ?></p>
-    <a class="btn btn-secondary" href="post.php?slug=<?php echo htmlspecialchars($blogPost['slug'], ENT_QUOTES, 'UTF-8'); ?>" style="margin-top:auto;align-self:flex-start;font-weight:700;font-size:14.5px">Read the guidance</a>
+    <a class="btn btn-secondary" href="blog/<?php echo htmlspecialchars($blogPost['slug'], ENT_QUOTES, 'UTF-8'); ?>/" style="margin-top:auto;align-self:flex-start;font-weight:700;font-size:14.5px">Read the guidance</a>
   </article><?php endforeach; ?></div>
   <?php if ($blogTotalPages > 1): ?>
   <nav class="pagination" aria-label="Blog pages" style="display:flex;align-items:center;justify-content:center;gap:8px;flex-wrap:wrap;margin-top:36px">

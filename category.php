@@ -20,7 +20,6 @@ $categoryPath = 'category/' . htmlspecialchars($category['slug'], ENT_QUOTES, 'U
 ?><?php
 $pageTitle = $category['name'] . ' guides | Bitsy AV';
 $pageDescription = 'Buyer guides and practical notes on ' . $category['name'] . ', written by the Bitsy AV specialists who install these systems.';
-$baseHref = '/';
 $pageExtraHead = '<link rel="stylesheet" href="assets/post.css">';
 $activeNav = 'blog';
 $quoteHref = 'contact-us.php#quote';
@@ -42,7 +41,7 @@ require __DIR__ . '/includes/header.php';
       <article class="card elev-sm" style="padding:28px 30px;display:flex;flex-direction:column;gap:12px">
       <h3 class="h3" style="line-height:1.2"><?php echo htmlspecialchars($catPost['title'], ENT_QUOTES, 'UTF-8'); ?></h3>
       <p class="apps" style="margin:0"><?php echo htmlspecialchars($catPost['excerpt'], ENT_QUOTES, 'UTF-8'); ?></p>
-      <a class="btn btn-secondary" href="post.php?slug=<?php echo htmlspecialchars($catPost['slug'], ENT_QUOTES, 'UTF-8'); ?>" style="margin-top:auto;align-self:flex-start;font-weight:700;font-size:14.5px">Read the guidance</a>
+      <a class="btn btn-secondary" href="blog/<?php echo htmlspecialchars($catPost['slug'], ENT_QUOTES, 'UTF-8'); ?>/" style="margin-top:auto;align-self:flex-start;font-weight:700;font-size:14.5px">Read the guidance</a>
     </article><?php endforeach; ?></div>
     <?php if ($categoryTotalPages > 1): ?>
     <nav class="pagination" aria-label="Category pages" style="display:flex;align-items:center;justify-content:center;gap:8px;flex-wrap:wrap;margin-top:36px">

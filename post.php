@@ -76,7 +76,7 @@ $related = array_slice($related, 0, 4);
       <h2>More buyer guides</h2>
       <div class="post-related-grid">
         <?php foreach ($related as $rr): ?>
-        <a class="post-related-card" href="post.php?slug=<?php echo htmlspecialchars($rr['slug'], ENT_QUOTES, 'UTF-8'); ?>">
+        <a class="post-related-card" href="blog/<?php echo htmlspecialchars($rr['slug'], ENT_QUOTES, 'UTF-8'); ?>/">
           <?php if (!empty($rr['category'])): ?><p class="mini"><?php echo htmlspecialchars($rr['category'], ENT_QUOTES, 'UTF-8'); ?></p><?php endif; ?>
           <h3><?php echo htmlspecialchars($rr['title'], ENT_QUOTES, 'UTF-8'); ?></h3>
           <p><?php echo htmlspecialchars(mb_strimwidth($rr['excerpt'], 0, 100, '…'), ENT_QUOTES, 'UTF-8'); ?></p>
